@@ -1,9 +1,22 @@
 const conn = require('./conn')
 
-const USER = {
-  create: function(username, email, password){
-    return conn.query(`INSERT INTO users (username, email, password) VALUES ($1, $2, $3)`, [username, email, password])
-  }
+const create = (userInfo) => {
+    return conn.query(`INSERT INTO users (username, email, password) VALUES ($1, $2, $3);`, [userInfo.username, userInfo.email, userInfo.password])
 }
 
-module.exports = USER
+const getUserByEmail = (email) => {
+    return conn.oneOrNone(
+      `SELECT * FROM users WHERE email=$1`, [email]
+    )
+    .then(userInfo => {
+      console.log(userInfo)
+      return userInfo
+    })
+  //   .catch(error => {
+  //     console.error(error);
+  //     throw error
+  // })
+}
+
+
+module.exports = { create, getUserByEmail }

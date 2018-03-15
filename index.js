@@ -1,33 +1,30 @@
 const express = require('express')
 const app = express()
 const requestPromise = require('request-promise')
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 const cors = require('cors')
+const conn = require('./src/models/db/conn')
+const middlewares = require('./src/routes/middlewares')
 let PORT = process.env.PORT || 4000
-const allCoins = require('./routes/allCoins.js')
-const top100coins = require('./routes/top100coins.js')
-const router = require('./routes')
+const router = require('./src/routes')
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors())
-
+app.use(middlewares.addUserToRequest)
 app.use('/', router)
-// app.use('/api/100', top100coins)
 
-// app.get('/', (req, res) => {
-//   res.sendFile(__dirname + '/index.html')
-// })
-//
-// app.get('/api/toptencoins', (req, res) => {
-//   const options = {
-//     uri: 'https://api.coinmarketcap.com/v1/ticker/?limit=10',
-//     headers: {
-//       'User-Agent': 'Request-Promise'
-//     }
-//   }
-//   return requestPromise(options)
-//     .then( data => {
-//       const coins = JSON.parse(data)
-//       res.status(200).json(coins)
-//     })
-// })
+var sessionOptions = {
+  secret: "secret",
+  resave : true,
+  saveUninitialized : false,
+  store: new MongoStore({
+  url:"mongodb://localhost/newmoney-cointracker"
+  })
+}
+app.use(session(sessionOptions));
+
 
 app.listen(PORT, () => console.log(`LIVE on ${PORT}`))

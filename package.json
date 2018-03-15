@@ -1,20 +1,25 @@
 {
   "name": "newmoney-api",
   "version": "1.0.0",
-  "description": "API for NewMony CoinTracker",
+  "description": "API for NewMoney CoinTracker",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node             ~K ]index.js",
     "start:dev": "nodemon",
     "db:create": "createdb newmoney",
-    "db:init": "npm run create && psql -d -f src/models/db/schema.sql",
+    "db:drop": "dropdb newmoney",
+    "db:init": "npm run db:create && psql -d newmoney < src/models/db/schema.sql",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "DeBray Carpenter (@debraycodes)",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "connect-mongo": "^2.0.1",
     "cors": "^2.8.4",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mongodb": "^3.0.4",
     "pg-promise": "^8.1.1",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"

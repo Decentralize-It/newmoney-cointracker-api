@@ -1,5 +1,6 @@
-const USER = require('./db/users')
+const db = require('./db/users')
 
 module.exports = {
-  create: USER.create
+  create: db.create,
+  getUserByEmail: db.getUserByEmail
 }
